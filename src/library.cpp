@@ -3,10 +3,21 @@
 #include <cstdio>
 
 #define FUNCTION_DEFINITION(ReturnType) LIB_EXTERN_C ReturnType LIB_CALL
+namespace
+{
+	struct _v : std::vector<int>
+	{
+		using std::vector<int>::vector;
+		~_v() { puts(__PRETTY_FUNCTION__ ); }
+	};
+}
+
 
 extern "C" struct Vector_int
 {
-	std::vector<int> Data;
+	Vector_int() {}  // must be non trivial else it won't link
+	_v Data;
+	~Vector_int() = default;
 };
 
 FUNCTION_DEFINITION(Vector_int_Handle) Vector_int_Create()
@@ -14,7 +25,7 @@ FUNCTION_DEFINITION(Vector_int_Handle) Vector_int_Create()
 	Vector_int_Handle vector = (Vector_int_Handle)malloc(sizeof(Vector_int));
 	if (vector)
 	{
-		new (&vector->Data) std::vector<int>();
+		new (vector) Vector_int();
 	}
 
 	return vector;
@@ -70,6 +81,6 @@ FUNCTION_DEFINITION(void) Vector_int_Destroy(Vector_int_Handle handle)
 {
 	if (!handle) return;
 
-	handle->Data.~vector<int>();
+	handle->~Vector_int();
 	free(handle);
 }
