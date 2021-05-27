@@ -3,7 +3,7 @@
 #include "library_base.h"
 
 LIB_EXTERN_C typedef struct Vector_int* Vector_int_Handle;
-typedef char LIB_Bool;
+typedef int LIB_Bool;
 LIB_ENUM(LIB_EResult,
 	LIB_Success,
 	LIB_Failed);
