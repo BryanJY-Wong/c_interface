@@ -2,7 +2,7 @@
 #include <vector>
 #include <cstdio>
 
-#define FUNCTION_DEFINITION(ReturnType) LIB_EXTERN_C ReturnType LIB_CALL
+#define FUNCTION_DEFINITION(ReturnType) extern "C" ReturnType LIB_CALL
 namespace
 {
 	struct _v : std::vector<int>
@@ -12,10 +12,9 @@ namespace
 	};
 }
 
-
 extern "C" struct Vector_int
 {
-	Vector_int() {}  // must be non trivial else it won't link
+	Vector_int() = default;
 	_v Data;
 	~Vector_int() = default;
 };
